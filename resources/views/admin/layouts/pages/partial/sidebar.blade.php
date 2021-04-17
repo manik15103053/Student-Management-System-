@@ -5,7 +5,7 @@
       </div>
       <div class="details">
         <p class="user-name">{{Auth::user()->name}}</p>
-        <p class="designation">Developer</p>
+        <p class="designation">{{Auth::user()->username}}</p>
       </div>
     </div>
     <ul class="nav">
@@ -29,6 +29,43 @@
         <a class="nav-link" href="{{route('class.create')}}">
           <i class="mdi mdi-gauge menu-icon"></i>
           <span class="menu-title">Manage Class</span>
+        </a>
+      </li>
+      <li class="">
+        <a class="nav-link" href="{{route('teacher.create')}}">
+          <i class="mdi mdi-gauge menu-icon"></i>
+          <span class="menu-title">Manage Teacher</span>
+        </a>
+      </li>
+      <li class="">
+        <a class="nav-link" href="{{route('section.create')}}">
+          <i class="mdi mdi-gauge menu-icon"></i>
+          <span class="menu-title">Manage Section</span>
+        </a>
+      </li>
+      <li class="">
+        <a class="nav-link" href="{{route('subject.create')}}">
+          <i class="mdi mdi-gauge menu-icon"></i>
+          <span class="menu-title">Manage Subject</span>
+        </a>
+      </li>
+      <li class="">
+        <a class="nav-link" href="{{route('result.create')}}">
+          <i class="mdi mdi-gauge menu-icon"></i>
+          <span class="menu-title">Manage Gread</span>
+        </a>
+      </li>
+
+      <li class="">
+        <a class="nav-link" href="{{route('division.create')}}">
+          <i class="mdi mdi-gauge menu-icon"></i>
+          <span class="menu-title">Manage Division</span>
+        </a>
+      </li>
+      <li class="">
+        <a class="nav-link" href="{{route('district.create')}}">
+          <i class="mdi mdi-gauge menu-icon"></i>
+          <span class="menu-title">Manage District</span>
         </a>
       </li>
      

@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Result;
+use App\Models\Divison;
+use App\Models\Section;
 use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\District;
+use Illuminate\Support\Str;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 
@@ -19,8 +27,15 @@ class StudentController extends Controller
         $students = Student::all();
         
         $studentClass = StudentClass::all();
+        $teacher = Teacher::all();
+        $section = Section::all();
         //dd($studentClass->all());
-        return view('admin.layouts.pages.home',compact('students','studentClass'));
+        $result = Result::all();
+        
+       
+        return view('admin.layouts.pages.home',compact('students','studentClass',
+            'teacher','section','result'
+    ));
     }
 
     public function index(Request $request){
@@ -34,8 +49,15 @@ class StudentController extends Controller
     }
     public function create(){
 
-        $studentClass = StudentClass::all();
-        return view('admin.layouts.pages.create',compact('studentClass'));
+        $studentClass = StudentClass::orderBy('id','desc')->get();
+        $section = Section::orderBy('id','asc')->get();
+        $teacher = Teacher::orderBy('id','desc')->get();
+        $division = Divison::orderBY('priority','asc')->get();
+        $district = District::orderBy('name','asc')->get();
+
+        return view('admin.layouts.pages.create',compact('studentClass',
+        'section','teacher','division','district'
+    ));
     }
 
     public function store(Request $request){
@@ -44,28 +66,35 @@ class StudentController extends Controller
             'name'  =>     'required',
             'email'  =>     'required',
             'phone'  =>     'required',
-            'district'  =>     'required',
-            'country'  =>     'required',
-            'date'  =>     'required'
+            'class_id'  =>     'required',
+            'section_id'  =>     'required',
+            'teacher_id'  =>     'required',
+            'division_id'  =>     'required',
+            'district_id'  =>     'required',
+            'date'  =>     'required',
+            'description'  =>     'required'
             
 
         ]);
-        if($request->hasFile('student_image')){
-            $image = $request->file('student_image');
-            $img = time().'.'.$image->getClientOriginalExtension();
-            $location = public_path('images/student/' .$img);
-            Image::make($image)->save($location);
-        }
-        $student = new Student();
+        $student =  new Student();
         $student->name = $request->name;
         $student->email = $request->email;
         $student->phone = $request->phone;
-        $student->district = $request->district;
-        $student->country = $request->country;
+        $student->class_id = $request->class_id;
+        $student->section_id = $request->section_id;
+        $student->teacher_id = $request->teacher_id;
+        $student->division_id = $request->division_id;
+        $student->district_id = $request->district_id;
         $student->date = $request->date;
         $student->description = $request->description;
-        $student->image = $img;
-        $student->class_id = $request->class_id;
+      if($request->hasFile('image')){
+       
+          $image = $request->file('image');
+          $img = time().'.'.$image->getClientOriginalExtension();
+          $location = public_path('/images/student'.$img);
+          Image::make($image)->save($location);
+          $student->image = $img;
+        }
         $student->save();
         return redirect(route('index'))->with('msg','Student Added Successfully.');
 
@@ -74,10 +103,16 @@ class StudentController extends Controller
     public function edit($id){
         //dd($id->all());
         $students = Student::find($id);
-        $studentClass = StudentClass::all();
+        $studentClass = StudentClass::orderBy('id','desc')->get();
+        $section = Section::orderBy('id','asc')->get();
+        $teacher = Teacher::orderBy('id','desc')->get();
+        $division = Divison::orderBY('priority','asc')->get();
+        $district = District::orderBy('name','asc')->get();
         //dd($students->all());
 
-        return view('admin.layouts.pages.edit',compact('students','studentClass'));
+        return view('admin.layouts.pages.edit',compact('students','studentClass'
+        ,'section','teacher','division','district'
+    ));
     }
 
     public function update(Request $request,$id){
@@ -86,40 +121,53 @@ class StudentController extends Controller
             'name'  =>     'required',
             'email'  =>     'required',
             'phone'  =>     'required',
-            'district'  =>     'required',
-            'country'  =>     'required',
-            'date'  =>     'required'
+            'class_id'  =>     'required',
+            'section_id'  =>     'required',
+            'teacher_id'  =>     'required',
+            'division_id'  =>     'required',
+            'district_id'  =>     'required',
+            'date'  =>     'required',
+            'description'  =>     'required'
             
 
         ]);
-        if($request->hasFile('student_image')){
-            $image = $request->file('student_image');
-            $img = time().'.'.$image->getClientOriginalExtension();
-            $location = public_path('images/student/' .$img);
-            Image::make($image)->save($location);
-        }
         $student =  Student::find($id);
         $student->name = $request->name;
         $student->email = $request->email;
         $student->phone = $request->phone;
-        $student->district = $request->district;
-        $student->country = $request->country;
+        $student->class_id = $request->class_id;
+        $student->section_id = $request->section_id;
+        $student->teacher_id = $request->teacher_id;
+        $student->division_id = $request->division_id;
+        $student->district_id = $request->district_id;
         $student->date = $request->date;
         $student->description = $request->description;
-        $student->image = $img;
-        $student->class_id = $request->class_id;
-        $student->save();
-        return redirect(route('index'))->with('msg','Student Added Successfully.');
+      if($request->hasFile('image')){
+          if(File::exists('/images/student',$student->image)){
+              File::delete('/images/student',$student->image);
+          }
+          $image = $request->file('image');
+          $img = time().'.'.$image->getClientOriginalExtension();
+          $location = public_path('/images/student'.$img);
+          Image::make($image)->save($location);
+          $student->image = $img;
+
+      }
+      $student->save();
+      return redirect(route('index'))->with('msg','Student Has Updated Successfully');
 
 
 
    
-    
+       
 }
     public function delete($id){
 
         $student = Student::find($id);
         if(!is_null($student)){
+            if(File::exists('/images/student',$student->image)){
+                File::delete('/images/student',$student->image);
+            }
 
             $student->delete();
             return redirect()->back()->with('msg','Student Has Deleted Successfully');
@@ -162,6 +210,38 @@ class StudentController extends Controller
         
 
         return view('admin.setting.setting')->with('user',auth()->user());
+    }
+    public function updateProfile(Request $request){
+        $image = $request->file('image');
+        $slug  = Str::slug($request->name);
+        $user = Auth::user();
+
+        if(isset($image)){
+
+            $currentDate  = Carbon::now()->toDateString();
+            $imageName = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('profile', $imageName);
+            if($user->image != NULL && $user->image != "" && file_exists(public_path('uploads/profile/'.$user->image)))
+            unlink(public_path('uploads/profile/'.$user->image));
+
+        } else {
+            $imageName  = $user->image;
+        }
+       
+        
+        $user->username    = $request->username;
+        $user->email    = $request->email;
+        $user->image    = $imageName;
+        $user->save();
+        return redirect()->back()->with('msg','User Updated Successfully.');
+
+             
+          
+        
+       
+
+        
+        
     }
 
   

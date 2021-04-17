@@ -4,10 +4,14 @@
 <div class="content-wrapper" style="min-height: 1724.5px;width:1100px;margin-left:0px">
     <div class="card">
       <div class="card-body">
-       
+        @if(Session::has('msg'))
+        <div class="alert alert-info">
+            {{ Session::get('msg') }}
+        </div>
+    @endif
         <h3>Update Profiles</h3>
         <div class="container">
-            <form style="width:60%"method="POST"action=""enctype="multipart/form-data">
+            <form style="width:60%"method="POST"action="{{route('update.profile')}}"enctype="multipart/form-data">
                 @csrf
                   <div class="form-group">
                     <label for="username">User Name</label>

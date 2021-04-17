@@ -54,7 +54,7 @@
         </div>
         @endif
 
-        <h2 class="card-title">Student Result Sheet
+        <h2 class="card-title">Search Result Sheet
           <form method="GET"action="">
             @csrf
           
@@ -109,7 +109,7 @@
 
               
                  <td>
-                   <a href="{{route('student.view',$result->id)}}"class="btn btn-info">view</a>
+                   <a href=""class="btn btn-info">view</a>
                  </td>
                  
                </tr>

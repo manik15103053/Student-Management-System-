@@ -3,22 +3,16 @@
 namespace App\Models;
 
 use App\Models\Result;
-use App\Models\Student;
-use App\Models\Subject;
+use App\Models\StudentClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class StudentClass extends Model
+class Subject extends Model
 {
     use HasFactory;
+    public function class(){
 
-    public function students(){
-        return $this->hasMany(Student::class);
-    }
-    
-    public function subject(){
-
-        return $this->hasMany(Subject::class);
+        return $this->belongsTo(StudentClass::class);
     }
     public function result(){
         return $this->hasMany(Result::class);

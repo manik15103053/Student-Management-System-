@@ -35,11 +35,10 @@
                 <tr>
                   <th>Sl</th>
                   <th>Student Name.</th>
-                  <th>Student Email.</th>
                   <th>Student Class.</th>
-                  <th>Student Phone.</th>
-                  <th>Student Division.</th>
-                  <th>Student Country.</th>
+                  <th>Phone.</th>
+                  <th>Division.</th>
+                  <th>District.</th>
                   <th>Action. </th>
                 </tr>
               </thead>
@@ -49,17 +48,16 @@
                <tr>
                  <td>{{$key +1}}</td>
                  <td>{{$student->name}}</td>
-                 <td>{{$student->email}}</td>
                  <td>{{$student->class->name}}</td>
                  <td>{{$student->phone}}</td>
-                 <td>{{$student->district}}</td>
-                 <td>{{$student->country}}</td>
+                 <td>{{$student->division->name}}</td>
+                 <td>{{$student->district->name}}</td>
                  <td>
-                      <a href="{{route('student.edit',$student->id)}}"class="">
-                        <i class="material-icons">edit</i>
+                      <a href="{{route('student.edit',$student->id)}}"class="btn btn-info">
+                        Edit
                     </a>
-                    <a href="{{route('student.delete',$student->id)}}"class="">
-                      <i class="material-icons">delete</i>
+                    <a href="{{route('student.delete',$student->id)}}"class="btn btn-danger">
+                      Delete
                   </a>
                  </td>
                </tr>

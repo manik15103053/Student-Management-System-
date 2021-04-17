@@ -10,8 +10,8 @@
             {{ Session::get('msg') }}
         </div>
         @endif
-          <a href=""class="btn btn-info"data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Class</a>
-        <h2 class="card-title">Class List</h2>
+          <a href=""class="btn btn-info"data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Section</a>
+        <h2 class="card-title">Section List</h2>
         
        
 
@@ -21,23 +21,23 @@
               <thead>
                 <tr>
                   <th>Sl</th>
-                  <th>Class Name.</th>
+                  <th>Section Name.</th>
                   <th>Created At.</th>
                   <th>Updated At.</th>
                   <th>action</th>
                 </tr>
               </thead>
               <tbody>
-            @foreach ($studentClass as $key=>$class)
+            @foreach ($sections as $key=>$section)
 
             <tr>
-              <td>{{$key + 1}}</td>
-              <td>{{$class->name}}</td>
-              <td>{{$class->created_at}}</td>
-              <td>{{$class->updated_at}}</td>
+              <td>{{$key +1}}</td>
+              <td>{{$section->name}}</td>
+              <td>{{$section->created_at}}</td>
+              <td>{{$section->updated_at}}</td>
               <td>
-                <a href="{{route('class.edit',$class->id)}}"class="btn btn-info">Edit</a>
-                <a href="{{route('class.delete',$class->id)}}"class="btn btn-danger">Delete</a>
+                <a href="{{route('section.edit',$section->id)}}"class="btn btn-info">Edit</a>
+                <a href="{{route('section.delete',$section->id)}}"class="btn btn-danger">Delete</a>
               </td>
             </tr>
               
@@ -61,19 +61,19 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Class</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add New Section</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form style=""method="POST"action="{{route('class.store')}}"enctype="multipart/form-data">
+        <form style=""method="POST"action="{{route('section.store')}}"enctype="multipart/form-data">
           @csrf
             <div class="form-group">
-              <label for="name">Class Name</label>
+              <label for="name">Section Name</label>
               <input type="text" required name="name"class="form-control" id="name" >
             </div>
             <div class="form-group">
               <label for="name">Description</label>
-              <textarea class="form-control"name="description" id="description" cols="30" rows="3"></textarea>
+              <textarea required class="form-control"name="description" id="description" cols="30" rows="3"></textarea>
             </div>
          
            

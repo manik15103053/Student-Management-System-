@@ -33,8 +33,35 @@ class StudentClassController extends Controller
 
     public function classEdit($id){
 
-        $class = StudentClass::find($id);
+        $studentClass = StudentClass::find($id);
 
-        return view('admin.layouts.class.edit',compact('class'));
+        return view('admin.layouts.class.edit',compact('studentClass'));
     }
+    public function classUpdate(Request $request ,$id){
+
+        $this->validate($request,[
+
+            'name'    =>    'required',
+            'description' =>  'required'
+        ]);
+       $studentClass = StudentClass::find($id);
+       
+       $studentClass->name = $request->name;
+       $studentClass->description = $request->description;
+       $studentClass->save();
+       return redirect(route('class.create'))->with('msg','Student Class Has Updated Successfully.');
+    }
+    public function classDelete($id){
+
+
+        $studentClass  = StudentClass::find($id);
+        if(!is_null($studentClass )){
+            $studentClass->delete();
+
+            return redirect(route('class.create'))->with('msg','Student Class Has Deleted Successfully');
+        
+    }else{
+        return redirect()->back()->with('msg','There is no Data');
+    }
+}
 }

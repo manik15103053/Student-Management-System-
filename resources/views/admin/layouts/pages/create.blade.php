@@ -45,20 +45,57 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="district">Division</label>
-              <input type="text" required class="form-control" name="district"id="district" placeholder="Enter Division">
+              <label for="section_id">Section Name</label>
+              <select name="section_id" id="section_id"class="form-control">
+                <option value="">Select The Section For The Student</option>
+                @foreach ($section as $section)
+                <option value="{{$section->id}}">{{$section->name}}</option>
+                  
+                @endforeach
+
+              </select>
             </div>
             <div class="form-group">
-              <label for="country">Country</label>
-              <input type="text" required class="form-control" name="country"id="country" placeholder="Enter Division">
+              <label for="teacher_id">Teacher Name</label>
+              <select name="teacher_id" id="teacher_id"class="form-control">
+                <option value="">Select The Teacher For the Student</option>
+                @foreach ($teacher as $teacher)
+                <option value="{{$teacher->id}}">{{$teacher->name}}</option>
+                  
+                @endforeach
+
+              </select>
             </div>
+            <div class="form-group">
+              <label for="division_id">Division Name</label>
+              <select name="division_id" id="division_id"class="form-control">
+                <option value="">Select The Division For the Student</option>
+                @foreach ($division as $division)
+                <option value="{{$division->id}}">{{$division->name}}</option>
+                  
+                @endforeach
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="district_id">District Name</label>
+              <select name="district_id" id="district_id"class="form-control">
+                <option value="">Select The District For the Student</option>
+                @foreach ($district as $district)
+                <option value="{{$district->id}}">{{$district->name}}</option>
+                  
+                @endforeach
+
+              </select>
+            </div>
+           
             <div class="form-group">
               <label for="date">Date</label>
               <input type="date" required class="form-control" name="date"id="date" placeholder="Enter Division">
             </div>
             <div class="form-group">
-              <label for="student_image">Image</label>
-              <input type="file" class="form-control" name="student_image"id="student_image" >
+              <label for="image">Image</label>
+              <input type="file" class="form-control" name="image"id="image" >
             </div>
             <div class="form-group">
               <label for="description">Description</label>

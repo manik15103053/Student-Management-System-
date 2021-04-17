@@ -18,7 +18,7 @@
             {{ Session::get('msg') }}
         </div>
     @endif
-        <h2 class="card-title">Student Form</h2>
+        <h2 class="card-title">Edit Student</h2>
         <form style="width:60%;"method="POST"action="{{route('update.student',$students->id)}}"enctype="multipart/form-data">
           @csrf
             <div class="form-group">
@@ -45,13 +45,50 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="district">Division</label>
-              <input type="text"value="{{$students->district}}" required class="form-control" name="district"id="district" placeholder="Enter Division">
+              <label for="section_id">Section Name</label>
+              <select name="section_id" id="section_id"class="form-control">
+                <option value="">Select The Section For The Student</option>
+                @foreach ($section as $section)
+                <option value="{{$section->id}}" {{$students->section->id == $section->id ? 'selected':''}}>{{$section->name}}</option>
+                  
+                @endforeach
+
+              </select>
             </div>
             <div class="form-group">
-              <label for="country">Country</label>
-              <input type="text"value="{{$students->country}}" required class="form-control" name="country"id="country" placeholder="Enter Division">
+              <label for="teacher_id">Teacher Name</label>
+              <select name="teacher_id" id="teacher_id"class="form-control">
+                <option value="">Select The Teacher For the Student</option>
+                @foreach ($teacher as $teacher)
+                <option value="{{$teacher->id}}" {{$students->teacher->id == $teacher->id ? 'selected':''}}>{{$teacher->name}}</option>
+                  
+                @endforeach
+
+              </select>
             </div>
+            <div class="form-group">
+              <label for="division_id">Division Name</label>
+              <select name="division_id" id="division_id"class="form-control">
+                <option value="">Select The Division For the Student</option>
+                @foreach ($division as $division)
+                <option value="{{$division->id}}" {{$students->division->id == $division->id ? 'selected':''}}>{{$division->name}}</option>
+                  
+                @endforeach
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="district_id">District Name</label>
+              <select name="district_id" id="district_id"class="form-control">
+                <option value="">Select The District For the Student</option>
+                @foreach ($district as $district)
+                <option value="{{$district->id}}" {{$students->district->id == $district->id ? 'selected':''}}>{{$district->name}}</option>
+                  
+                @endforeach
+
+              </select>
+            </div>
+         
             <div class="form-group">
               <label for="date">Date</label>
               <input type="date"value="{{$students->date}}" required class="form-control" name="date"id="date" placeholder="Enter Division">

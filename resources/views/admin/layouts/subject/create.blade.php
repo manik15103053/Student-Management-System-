@@ -10,8 +10,8 @@
             {{ Session::get('msg') }}
         </div>
         @endif
-          <a href=""class="btn btn-info"data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Class</a>
-        <h2 class="card-title">Class List</h2>
+          <a href=""class="btn btn-info"data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Subject</a>
+        <h2 class="card-title">Subject List</h2>
         
        
 
@@ -22,22 +22,24 @@
                 <tr>
                   <th>Sl</th>
                   <th>Class Name.</th>
+                  <th>Subject Name.</th>
                   <th>Created At.</th>
                   <th>Updated At.</th>
                   <th>action</th>
                 </tr>
               </thead>
               <tbody>
-            @foreach ($studentClass as $key=>$class)
+            @foreach ($subject as $key=>$subject)
 
             <tr>
-              <td>{{$key + 1}}</td>
-              <td>{{$class->name}}</td>
-              <td>{{$class->created_at}}</td>
-              <td>{{$class->updated_at}}</td>
+              <td>{{$key +1}}</td>
+              <td>{{$subject->class->name}}</td>
+              <td>{{$subject->name}}</td>
+              <td>{{$subject->created_at}}</td>
+              <td>{{$subject->updated_at}}</td>
               <td>
-                <a href="{{route('class.edit',$class->id)}}"class="btn btn-info">Edit</a>
-                <a href="{{route('class.delete',$class->id)}}"class="btn btn-danger">Delete</a>
+                <a href="{{route('subject.edit',$subject->id)}}"class="btn btn-info">Edit</a>
+                <a href="{{route('subject.delete',$subject->id)}}"class="btn btn-danger">Delete</a>
               </td>
             </tr>
               
@@ -61,19 +63,29 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Class</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add New Subject</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form style=""method="POST"action="{{route('class.store')}}"enctype="multipart/form-data">
+        <form style=""method="POST"action="{{route('subject.store')}}"enctype="multipart/form-data">
           @csrf
             <div class="form-group">
-              <label for="name">Class Name</label>
+              <label for="class_id">Class Name</label>
+              <select name="class_id" id="class_id"class="form-control">
+                <option value="">Select the Class for the Subject</option>
+                @foreach ($studentClass as $class)
+                <option value="{{$class->id}}">{{$class->name}}</option>
+                  
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="name">Subject Name</label>
               <input type="text" required name="name"class="form-control" id="name" >
             </div>
             <div class="form-group">
               <label for="name">Description</label>
-              <textarea class="form-control"name="description" id="description" cols="30" rows="3"></textarea>
+              <textarea required class="form-control"name="description" id="description" cols="30" rows="3"></textarea>
             </div>
          
            
