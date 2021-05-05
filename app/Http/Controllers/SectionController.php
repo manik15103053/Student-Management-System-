@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SectionController extends Controller
 {
     public function createSection(){
 
         $sections = Section::orderBy('name','desc')->get();
-        return view('admin.layouts.section.create',compact('sections'));
+        $user = Auth::user();
+        return view('admin.layouts.section.create',compact('sections','user'));
     }
     public function storeSection(Request $request){
 
@@ -34,8 +36,9 @@ class SectionController extends Controller
 
 
         $section = Section::find($id);
+        $user = Auth::user();
 
-        return view('admin.layouts.section.edit',compact('section'));
+        return view('admin.layouts.section.edit',compact('section','user'));
     }
 
     public function updateSecion(Request $request ,$id){

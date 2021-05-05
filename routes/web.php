@@ -74,6 +74,7 @@ Route::get('/delete/subject/{id}',[SubjectController::class,'deleteSubject'])->n
 Route::get('/create/result',[ResultController::class,'createResult'])->name('result.create');
 Route::post('/store/result',[ResultController::class,'storeResult'])->name('result.store');
 Route::get('/edit/result/{id}',[ResultController::class,'editResult'])->name('result.edit');
+Route::post('/update/result/{id}',[ResultController::class,'updateResult'])->name('result.update');
 Route::get('/delete/result/{id}',[ResultController::class,'deleteResult'])->name('result.delete');
 ///Division Route//////
 Route::get('/create/division',[DivisonController::class,'createDivision'])->name('division.create');

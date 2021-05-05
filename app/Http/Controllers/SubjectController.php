@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\StudentClass;
 use App\Models\Subject;
+use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
@@ -12,8 +13,9 @@ class SubjectController extends Controller
 
         $subject = Subject::orderBy('name','desc')->get();
         $studentClass = StudentClass::orderBY('id','asc')->get();
+        $user = Auth::user();
 
-        return view('admin.layouts.subject.create',compact('subject','studentClass'));
+        return view('admin.layouts.subject.create',compact('user','subject','studentClass'));
     }
     public function storeSubject(Request $request){
 
@@ -37,8 +39,9 @@ class SubjectController extends Controller
 
         $subject = Subject::find($id);
         $studentClass = StudentClass::orderBY('id','asc')->get();
+        $user = Auth::user();
 
-        return view('admin.layouts.subject.edit',compact('subject','studentClass'));
+        return view('admin.layouts.subject.edit',compact('subject','studentClass','user'));
 
     }
 

@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Result;
 use App\Models\Student;
-use App\Models\StudentClass;
 use App\Models\Subject;
+use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResultController extends Controller
 {
@@ -16,8 +17,9 @@ class ResultController extends Controller
         $studentClass = StudentClass::orderBy('id','asc')->get();
         $subject = Subject::orderBy('name','desc')->get();
         $student = Student::orderBy('id','desc')->get();
+        $user = Auth::user();
 
-        return view('admin.layouts.result.create',compact('results','studentClass','subject','student'));
+        return view('admin.layouts.result.create',compact('results','studentClass','subject','student','user'));
 
     }
     public function storeResult(Request $request){
@@ -43,14 +45,38 @@ class ResultController extends Controller
 
     public function editResult($id){
 
-        $result = Result::orderBy('id','desc')->get();
+        $result = Result::find($id);
+        //dd($result->all());
         $studentClass = StudentClass::orderBy('id','asc')->get();
         $subject = Subject::orderBy('name','desc')->get();
         $student = Student::orderBy('name','desc')->get();
+        $user = Auth::user();
         return view('admin.layouts.result.edit',compact('result',
-        'studentClass','subject','student'
+        'studentClass','subject','student','user'
         
     ));
+
+    }
+
+    public function updateResult(Request $request ,$id){
+
+        $this->validate($request,[
+
+            'name'  =>  'required',
+            'class_id'  =>  'required',
+            'subject_id'  =>  'required',
+            'student_id'  =>  'required',
+            'description'  =>  'required'
+            
+        ]);
+        $result =  Result::find($id);
+        $result->name = $request->name;
+        $result->student_id = $request->student_id;
+        $result->class_id = $request->class_id;
+        $result->subject_id = $request->subject_id;
+        $result->description = $request->description;
+        $result->save();
+        return redirect(route('result.create'))->with('msg','Result Has Updated successfully.');
 
     }
     public function deleteResult($id){
@@ -79,7 +105,8 @@ class ResultController extends Controller
     public function viewStudent($id){
 
         $student = Student::find($id);
+        $user = Auth::user();
        // dd($student->all());
-        return view('admin.layouts.pages.view',compact('student'));
+        return view('admin.layouts.pages.view',compact('student','user'));
     }
 }

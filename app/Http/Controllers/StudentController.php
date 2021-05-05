@@ -31,10 +31,10 @@ class StudentController extends Controller
         $section = Section::all();
         //dd($studentClass->all());
         $result = Result::all();
-        
+        $user = Auth::user();
        
         return view('admin.layouts.pages.home',compact('students','studentClass',
-            'teacher','section','result'
+            'teacher','section','result','user'
     ));
     }
 
@@ -43,9 +43,9 @@ class StudentController extends Controller
         $studentClass = StudentClass::all();
         $students = Student::all();
         $students = Student::where('class_id',$request->class_id)->get();
+        $user = Auth::user();
 
-
-        return view('admin.layouts.pages.index',compact('studentClass','students'));
+        return view('admin.layouts.pages.index',compact('studentClass','students','user'));
     }
     public function create(){
 
@@ -108,10 +108,11 @@ class StudentController extends Controller
         $teacher = Teacher::orderBy('id','desc')->get();
         $division = Divison::orderBY('priority','asc')->get();
         $district = District::orderBy('name','asc')->get();
+        $user = Auth::user();
         //dd($students->all());
 
         return view('admin.layouts.pages.edit',compact('students','studentClass'
-        ,'section','teacher','division','district'
+        ,'section','teacher','division','district','user'
     ));
     }
 
@@ -207,32 +208,29 @@ class StudentController extends Controller
 
     public function setting(){
 
-        
-
-        return view('admin.setting.setting')->with('user',auth()->user());
-    }
-    public function updateProfile(Request $request){
-        $image = $request->file('image');
-        $slug  = Str::slug($request->name);
         $user = Auth::user();
 
-        if(isset($image)){
+        return view('admin.setting.setting',compact('user'));
+    }
+    public function updateProfile(Request $request){
 
-            $currentDate  = Carbon::now()->toDateString();
-            $imageName = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('profile', $imageName);
-            if($user->image != NULL && $user->image != "" && file_exists(public_path('uploads/profile/'.$user->image)))
-            unlink(public_path('uploads/profile/'.$user->image));
+        $this->validate($request,[
 
-        } else {
-            $imageName  = $user->image;
-        }
-       
-        
-        $user->username    = $request->username;
+            'username'  => 'required',
+            'email'     => 'required'
+            
+        ]);
+        $user = Auth::user();
+        $user->username = $request->username;
         $user->email    = $request->email;
-        $user->image    = $imageName;
-        $user->save();
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $img = time().'.'.$image->getClientOriginalExtension();
+            $location = public_path('images/user/'.$img);
+            Image::make($image)->save($location);
+            $user->image = $img;
+         }
+            $user->save();
         return redirect()->back()->with('msg','User Updated Successfully.');
 
              

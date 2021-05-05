@@ -6,6 +6,7 @@ use App\Models\Divison;
 use App\Models\Teacher;
 use App\Models\District;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
@@ -16,7 +17,8 @@ class TeacherController extends Controller
         $teachers = Teacher::orderBy('name','asc')->get();
         $division = Divison::orderBy('priority','asc')->get();
         $district = District::orderBy('name','asc')->get();
-        return view('admin.layouts.teacher.create',compact('teachers','division','district'));
+        $user = Auth::user();
+        return view('admin.layouts.teacher.create',compact('teachers','division','district','user'));
     }
 
     public function storeTeacher(Request $request){
@@ -58,8 +60,9 @@ class TeacherController extends Controller
         $teacher  = Teacher::find($id);
         $division = Divison::orderBy('priority','asc')->get();
         $district = District::orderBy('name','asc')->get();
+        $user = Auth::user();
 
-        return view('admin.layouts.teacher.edit',compact('teacher','division','district'));
+        return view('admin.layouts.teacher.edit',compact('teacher','division','district','user'));
     }
 
     public function updateTeacher(Request $request ,$id){

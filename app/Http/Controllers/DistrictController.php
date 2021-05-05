@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\District;
 use App\Models\Divison;
+use App\Models\District;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DistrictController extends Controller
 {
@@ -12,7 +13,8 @@ class DistrictController extends Controller
 
         $district = District::orderBy('name','asc')->get();
         $division = Divison::orderBy('priority','asc')->get();
-        return view('admin.layouts.district.create',compact('district','division'));
+        $user = Auth::user();
+        return view('admin.layouts.district.create',compact('district','division','user'));
     }
 
     public function storeDistrict(Request $request){
@@ -34,7 +36,8 @@ class DistrictController extends Controller
 
         $district = District::find($id);
         $division = Divison::orderBy('priority','asc')->get();
-        return view('admin.layouts.district.edit',compact('district','division'));
+        $user = Auth::user();
+        return view('admin.layouts.district.edit',compact('district','division','user'));
 
 
      }

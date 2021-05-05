@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentClassController extends Controller
 {
     public function classCreate(){
 
         $studentClass = StudentClass::all();
+        $user = Auth::user();
 
-        return view('admin.layouts.class.index',compact('studentClass'));
+        return view('admin.layouts.class.index',compact('studentClass','user'));
     }
 
     public function classStore(Request $request){
@@ -34,8 +36,9 @@ class StudentClassController extends Controller
     public function classEdit($id){
 
         $studentClass = StudentClass::find($id);
+        $user = Auth::user();
 
-        return view('admin.layouts.class.edit',compact('studentClass'));
+        return view('admin.layouts.class.edit',compact('studentClass','user'));
     }
     public function classUpdate(Request $request ,$id){
 

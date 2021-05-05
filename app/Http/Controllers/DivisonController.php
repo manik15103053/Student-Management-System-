@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Divison;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DivisonController extends Controller
 {
     public function createDivision(){
 
         $divisions = Divison::orderBy('priority','asc')->get();
-        return view('admin.layouts.division.create',compact('divisions'));
+        $user = Auth::user();
+        return view('admin.layouts.division.create',compact('divisions','user'));
     }
 
     public function storeDivision(Request $request){
@@ -34,9 +36,9 @@ class DivisonController extends Controller
     public function divisionEdit($id){
 
         $division = Divison::find($id);
-      
+        $user = Auth::user();
 
-            return view('admin.layouts.division.edit',compact('division'));
+            return view('admin.layouts.division.edit',compact('division','user'));
         
     }
 
